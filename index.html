@@ -7,6 +7,7 @@
 <title>showdown</title>
 
 <style>
+
 body{
   margin:0;
   background:#fff;
@@ -16,7 +17,6 @@ body{
   width:100%;
   max-width:900px;
   margin:0 auto;
-  position:relative;
 }
 
 img{
@@ -24,6 +24,7 @@ img{
   display:block;
 }
 
+/* 화면에는 안 보이지만 보이스오버는 읽는 글씨 */
 .voice-text{
   position:absolute;
   width:1px;
@@ -36,34 +37,15 @@ img{
   border:0;
 }
 
-.play-btn{
-  position:fixed;
-  top:20px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:999;
-  padding:14px 24px;
-  font-size:18px;
-  font-weight:bold;
-  border:none;
-  border-radius:30px;
-  background:#111;
-  color:#fff;
-  cursor:pointer;
-  box-shadow:0 4px 12px rgba(0,0,0,0.25);
-}
-
+/* 오디오 플레이어 숨김 */
 audio{
   display:none;
 }
+
 </style>
 </head>
 
 <body>
-
-<button class="play-btn" onclick="playAudio()">
-  초대장 음성 듣기
-</button>
 
 <div class="wrap">
 
@@ -98,19 +80,46 @@ KB국민은행 상도동종합금융센터
 
 </div>
 
-<audio id="bgm">
+<audio id="bgm" muted autoplay playsinline>
   <source src="voice.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-function playAudio(){
-  const audio = document.getElementById("bgm");
-  audio.volume = 1.0;
-  audio.play();
 
-  const btn = document.querySelector(".play-btn");
-  btn.innerText = "음성 재생 중";
-}
+window.addEventListener('load', async function () {
+
+  const audio = document.getElementById('bgm');
+
+  try {
+
+    await audio.play();
+
+    setTimeout(() => {
+
+      audio.muted = false;
+
+      audio.volume = 1.0;
+
+    }, 300);
+
+  } catch (e) {
+
+    console.log("자동재생 차단");
+
+    document.body.addEventListener('click', async function () {
+
+      audio.muted = false;
+
+      audio.volume = 1.0;
+
+      await audio.play();
+
+    }, { once:true });
+
+  }
+
+});
+
 </script>
 
 </body>
