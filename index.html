@@ -80,35 +80,41 @@ KB국민은행 상도동종합금융센터
 
 </div>
 
-<audio id="bgm" autoplay playsinline>
+<audio id="bgm" muted autoplay playsinline>
   <source src="voice.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-window.addEventListener('load', function () {
+window.addEventListener('load', async function () {
 
   const audio = document.getElementById('bgm');
 
-  audio.volume = 1.0;
+  try {
 
-  const playPromise = audio.play();
+    await audio.play();
 
-  if (playPromise !== undefined) {
+    setTimeout(() => {
 
-    playPromise
-      .then(() => {
-        console.log("자동재생 성공");
-      })
-      .catch(() => {
+      audio.muted = false;
 
-        console.log("자동재생 차단");
+      audio.volume = 1.0;
 
-        document.body.addEventListener('click', function () {
-          audio.play();
-        }, { once:true });
+    }, 300);
 
-      });
+  } catch (e) {
+
+    console.log("자동재생 차단");
+
+    document.body.addEventListener('click', async function () {
+
+      audio.muted = false;
+
+      audio.volume = 1.0;
+
+      await audio.play();
+
+    }, { once:true });
 
   }
 
