@@ -7,6 +7,7 @@
 <title>showdown</title>
 
 <style>
+
 body{
   margin:0;
   background:#fff;
@@ -35,29 +36,85 @@ img{
   white-space:nowrap;
   border:0;
 }
+
+/* 오디오 플레이어 숨김 */
+audio{
+  display:none;
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="wrap">
+
   <img src="card1.jpg" alt="2026 쇼다운 대회 초대장">
 
   <div class="voice-text">
-    전국의 시각장애인 쇼다운 선수들이 펼치는 뜨거운 승부의 무대, 
+전국의 시각장애인 쇼다운 선수들이 펼치는 뜨거운 승부의 무대,
 2026 서울특별시장배 전국시각장애인 쇼다운대회에 여러분을 초대합니다.
+
 바쁘시더라도 참석하시어 열정과 감동이 함께하는 뜻깊은 자리를 빛내주시기 바랍니다.
-기간: 2026년 6월 27일 토요일 부터 28일 일요일
-    개회식 2026년 6월 27일 토요일 9시 30분 4층 아테네 홀
+
+기간: 2026년 6월 27일 토요일부터 28일 일요일
+
+개회식: 2026년 6월 27일 토요일 오전 9시 30분, 4층 아테네 홀
+
 장소: 서울올림픽파크텔
+
 주소: 서울시 송파구 올림픽로 448
+
 주최: 서울특별시장애인체육회
-주관: 서울시각장애인스포츠연맹, 대한장애인쇼다운협회, 우리동작장애인자립생활센터
-후원: 서울특별시, 사단법인윌, kb국민은행 상도동종합금융센터
+
+주관:
+서울시각장애인스포츠연맹,
+대한장애인쇼다운협회,
+우리동작장애인자립생활센터
+
+후원:
+서울특별시,
+사단법인 윌,
+KB국민은행 상도동종합금융센터
   </div>
+
 </div>
-<audio autoplay>
+
+<audio id="bgm" autoplay playsinline>
   <source src="voice.mp3" type="audio/mpeg">
 </audio>
+
+<script>
+
+window.addEventListener('load', function () {
+
+  const audio = document.getElementById('bgm');
+
+  audio.volume = 1.0;
+
+  const playPromise = audio.play();
+
+  if (playPromise !== undefined) {
+
+    playPromise
+      .then(() => {
+        console.log("자동재생 성공");
+      })
+      .catch(() => {
+
+        console.log("자동재생 차단");
+
+        document.body.addEventListener('click', function () {
+          audio.play();
+        }, { once:true });
+
+      });
+
+  }
+
+});
+
+</script>
+
 </body>
 </html>
